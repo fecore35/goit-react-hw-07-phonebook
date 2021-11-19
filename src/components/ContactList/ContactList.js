@@ -1,17 +1,23 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import s from "./ContactList.module.css";
-import { deleteContact } from "../../redux/contacts/contacts-action";
-import { getVisibleContacts } from "../../redux/contacts/contacts-selectors";
+import { deleteContact } from "redux/contacts/contacts-action";
+import { getVisibleContacts } from "redux/contacts/contacts-selectors";
+import { getContacts } from "redux/contacts/contacts-operation";
 
 function ContactList() {
   const visibleContacts = useSelector(getVisibleContacts);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getContacts());
+  }, [dispatch]);
+
   return (
     <ul className={s.list}>
       {visibleContacts &&
-        visibleContacts.map(({ id, name, number }) => {
+        visibleContacts.map(({ id, name, phone: number }) => {
           const tel = `tel:` + number.replace(/^(\+)|\D/g, "$1");
           return (
             <li key={id} className={s.item}>
