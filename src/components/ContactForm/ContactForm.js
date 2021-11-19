@@ -4,6 +4,7 @@ import s from "./ContactForm.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { createContact } from "redux/contacts/contacts-action";
 import { getContacts } from "../../redux/contacts/contacts-selectors";
+import { addContact } from "redux/contacts/contacts-operation";
 
 function ContactForm() {
   const contacts = useSelector(getContacts);
@@ -40,12 +41,12 @@ function ContactForm() {
       return alert(`${newContactName} is already in contacts.`);
     }
 
-    const newContact = { id: uuidv4(), name, number };
+    const newContact = { name, phone: number };
     setName("");
     setNumber("");
 
     // ? GlobalState - add new Contact
-    dispatch(createContact(newContact));
+    dispatch(addContact(newContact));
   };
 
   return (

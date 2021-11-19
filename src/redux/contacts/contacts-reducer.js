@@ -4,16 +4,18 @@ import {
   getContactsRequest,
   getContactsSuccesses,
   getContactsError,
+  addContactRequest,
+  addContactSuccesses,
+  addContactError,
   deleteContactRequest,
   deleteContactSuccesses,
   deleteContactError,
-  createContact,
   changeFilter,
 } from "../contacts/contacts-action";
 
 const itemsReducer = createReducer([], {
   [getContactsSuccesses]: (_, action) => [...action.payload],
-  [createContact]: (state, action) => [action.payload, ...state],
+  [addContactSuccesses]: (state, action) => [...state, action.payload],
   [deleteContactSuccesses]: (state, action) =>
     state.filter((item) => item.id !== action.payload.id),
 });
@@ -23,6 +25,11 @@ const isLoading = createReducer(false, {
   [getContactsRequest]: () => true,
   [getContactsSuccesses]: () => false,
   [getContactsError]: () => false,
+
+  /* Create */
+  [addContactRequest]: () => true,
+  [addContactSuccesses]: () => false,
+  [addContactError]: () => false,
 
   /* Delete */
   [deleteContactRequest]: () => true,
