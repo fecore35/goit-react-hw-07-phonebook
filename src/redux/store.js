@@ -1,8 +1,4 @@
-import {
-  configureStore,
-  combineReducers,
-  getDefaultMiddleware,
-} from "@reduxjs/toolkit";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import {
   FLUSH,
   REHYDRATE,
@@ -13,17 +9,25 @@ import {
 } from "redux-persist";
 import { contactsReducer } from "./contacts/contacts-reducer";
 
-const rootReducer = combineReducers({
-  contacts: contactsReducer,
-});
+const firstMiddleware = (state) => (next) => (action) => {
+  console.log("firstMiddleware-> ", action);
+  next(action);
+};
 
-const store = configureStore({
-  reducer: rootReducer,
-  middleware: getDefaultMiddleware({
+const middleware = [
+  ...getDefaultMiddleware({
     serializableCheck: {
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     },
   }),
+  firstMiddleware,
+];
+
+const store = configureStore({
+  reducer: {
+    contacts: contactsReducer,
+  },
+  middleware,
   devTools: true ?? process.env.NODE_ENV === "development",
 });
 
