@@ -2,9 +2,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import s from "./ContactList.module.css";
-import { deleteContact } from "redux/contacts/contacts-action";
 import { getVisibleContacts } from "redux/contacts/contacts-selectors";
-import { getContacts } from "redux/contacts/contacts-operation";
+import { getContacts, deleteContact } from "redux/contacts/contacts-operation";
 
 function ContactList() {
   const visibleContacts = useSelector(getVisibleContacts);
