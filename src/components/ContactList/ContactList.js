@@ -4,8 +4,8 @@ import { IoCloseCircleSharp } from "react-icons/io5";
 import s from "./ContactList.module.css";
 import { getVisibleContacts } from "redux/contacts/contacts-selectors";
 import {
-  deleteContact,
   getContactsAsync,
+  deleteContactAsync,
 } from "redux/contacts/contacts-operation";
 
 function ContactList() {
@@ -31,7 +31,7 @@ function ContactList() {
                 type="button"
                 data-id={id}
                 onClick={(e) => {
-                  dispatch(deleteContact(e.currentTarget.dataset.id));
+                  dispatch(deleteContactAsync(e.currentTarget.dataset.id));
                 }}
               >
                 <IoCloseCircleSharp />

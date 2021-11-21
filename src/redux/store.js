@@ -10,7 +10,7 @@ import {
 import { contactsReducer } from "./contacts/contacts-reducer";
 
 const firstMiddleware = (state) => (next) => (action) => {
-  console.log("firstMiddleware-> ", action);
+  // console.log("firstMiddleware-> ", action);
   next(action);
 };
 

@@ -1,29 +1,22 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
-import {
-  getContactsRequest,
-  getContactsSuccesses,
-  getContactsError,
-  addContactRequest,
-  addContactSuccesses,
-  addContactError,
-  deleteContactRequest,
-  deleteContactSuccesses,
-  deleteContactError,
-  changeFilter,
-} from "../contacts/contacts-action";
+import { changeFilter } from "../contacts/contacts-action";
 
-import { getContactsAsync } from "redux/contacts/contacts-operation";
+import {
+  getContactsAsync,
+  addContactAsync,
+  deleteContactAsync,
+} from "redux/contacts/contacts-operation";
 
 const itemsReducer = createReducer([], {
   /* Get */
   [getContactsAsync.fulfilled]: (_, action) => [...action.payload],
 
   /* Create */
-  [addContactSuccesses]: (state, action) => [...state, action.payload],
+  [addContactAsync.fulfilled]: (state, action) => [...state, action.payload],
 
   /* Delete */
-  [deleteContactSuccesses]: (state, action) =>
+  [deleteContactAsync.fulfilled]: (state, action) =>
     state.filter((item) => item.id !== action.payload.id),
 });
 
@@ -34,23 +27,29 @@ const isLoading = createReducer(false, {
   [getContactsAsync.rejected]: () => false,
 
   /* Create */
-  [addContactRequest]: () => true,
-  [addContactSuccesses]: () => false,
-  [addContactError]: () => false,
+  [addContactAsync.pending]: () => true,
+  [addContactAsync.fulfilled]: () => false,
+  [addContactAsync.rejected]: () => false,
 
   /* Delete */
-  [deleteContactRequest]: () => true,
-  [deleteContactSuccesses]: () => false,
-  [deleteContactError]: () => false,
+  [deleteContactAsync.pending]: () => true,
+  [deleteContactAsync.fulfilled]: () => false,
+  [deleteContactAsync.rejected]: () => false,
 });
 
 const itemsError = createReducer(null, {
+  /* Get */
   [getContactsAsync.rejected]: (_, action) => action.payload,
-  [deleteContactError]: (_, action) => action.payload,
+
+  /* Create */
+  [addContactAsync.rejected]: (_, action) => action.payload,
+
+  /* Delete */
+  [deleteContactAsync.rejected]: (_, action) => action.payload,
 });
 
 const filterReducer = createReducer("", {
-  [changeFilter]: (state, action) => action.payload,
+  [changeFilter]: (_, action) => action.payload,
 });
 
 export const contactsReducer = combineReducers({

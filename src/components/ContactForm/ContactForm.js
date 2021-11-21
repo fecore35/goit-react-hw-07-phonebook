@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import s from "./ContactForm.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { createContact } from "redux/contacts/contacts-action";
 import { getContacts } from "../../redux/contacts/contacts-selectors";
-import { addContact } from "redux/contacts/contacts-operation";
+import { addContactAsync } from "redux/contacts/contacts-operation";
 
 function ContactForm() {
   const contacts = useSelector(getContacts);
@@ -46,7 +44,7 @@ function ContactForm() {
     setNumber("");
 
     // ? GlobalState - add new Contact
-    dispatch(addContact(newContact));
+    dispatch(addContactAsync(newContact));
   };
 
   return (

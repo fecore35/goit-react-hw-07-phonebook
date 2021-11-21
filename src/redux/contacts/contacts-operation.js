@@ -1,9 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import * as actions from "redux/contacts/contacts-action";
 
 export const getContactsAsync = createAsyncThunk(
-  "contacts/addContact",
+  "contacts/getContact",
   async () => {
     const response = await axios.get(
       "https://619416bd0b39a70017b1570d.mockapi.io/api/v1/contacts"
@@ -24,36 +23,61 @@ export const getContactsAsync = createAsyncThunk(
 //     .catch((error) => dispatch(actions.getContactsError(error)));
 // };
 
-export const addContact = (contact) => (dispatch) => {
-  dispatch(actions.addContactRequest());
-  console.log(contact);
+export const addContactAsync = createAsyncThunk(
+  "contacts/addContact",
+  async (contact) => {
+    const response = await axios.post(
+      "https://619416bd0b39a70017b1570d.mockapi.io/api/v1/contacts",
+      contact
+    );
+    console.log(response);
+    const newContact = response.data;
+    return newContact;
+  }
+);
 
-  fetch("https://619416bd0b39a70017b1570d.mockapi.io/api/v1/contacts", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-    },
-    body: JSON.stringify(contact),
-  })
-    .then((data) => data.json())
-    .then((data) => {
-      dispatch(actions.addContactSuccesses(data));
-    })
-    .catch((error) => {
-      dispatch(actions.addContactError(error));
-    });
-};
+// export const addContact = (contact) => (dispatch) => {
+//   dispatch(actions.addContactRequest());
+//   console.log(contact);
 
-export const deleteContact = (id) => (dispatch) => {
-  dispatch(actions.deleteContactRequest());
+//   fetch("https://619416bd0b39a70017b1570d.mockapi.io/api/v1/contacts", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json;charset=utf-8",
+//     },
+//     body: JSON.stringify(contact),
+//   })
+//     .then((data) => data.json())
+//     .then((data) => {
+//       dispatch(actions.addContactSuccesses(data));
+//     })
+//     .catch((error) => {
+//       dispatch(actions.addContactError(error));
+//     });
+// };
 
-  fetch(`https://619416bd0b39a70017b1570d.mockapi.io/api/v1/contacts/${id}`, {
-    method: "DELETE",
-  })
-    .then((data) => data.json())
-    .then((data) => {
-      console.log(data);
-      dispatch(actions.deleteContactSuccesses(data));
-    })
-    .catch((error) => dispatch(actions.deleteContactError(error)));
-};
+export const deleteContactAsync = createAsyncThunk(
+  "contacts/deleteContact",
+  async (id) => {
+    const response = await axios.delete(
+      `https://619416bd0b39a70017b1570d.mockapi.io/api/v1/contacts/${id}`
+    );
+    console.log(response);
+    const deleteContact = response.data;
+    return deleteContact;
+  }
+);
+
+// export const deleteContact = (id) => (dispatch) => {
+//   dispatch(actions.deleteContactRequest());
+
+//   fetch(`https://619416bd0b39a70017b1570d.mockapi.io/api/v1/contacts/${id}`, {
+//     method: "DELETE",
+//   })
+//     .then((data) => data.json())
+//     .then((data) => {
+//       console.log(data);
+//       dispatch(actions.deleteContactSuccesses(data));
+//     })
+//     .catch((error) => dispatch(actions.deleteContactError(error)));
+// };
