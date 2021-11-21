@@ -13,18 +13,25 @@ import {
   changeFilter,
 } from "../contacts/contacts-action";
 
+import { getContactsAsync } from "redux/contacts/contacts-operation";
+
 const itemsReducer = createReducer([], {
-  [getContactsSuccesses]: (_, action) => [...action.payload],
+  /* Get */
+  [getContactsAsync.fulfilled]: (_, action) => [...action.payload],
+
+  /* Create */
   [addContactSuccesses]: (state, action) => [...state, action.payload],
+
+  /* Delete */
   [deleteContactSuccesses]: (state, action) =>
     state.filter((item) => item.id !== action.payload.id),
 });
 
 const isLoading = createReducer(false, {
   /* Get */
-  [getContactsRequest]: () => true,
-  [getContactsSuccesses]: () => false,
-  [getContactsError]: () => false,
+  [getContactsAsync.pending]: () => true,
+  [getContactsAsync.fulfilled]: () => false,
+  [getContactsAsync.rejected]: () => false,
 
   /* Create */
   [addContactRequest]: () => true,
@@ -38,7 +45,7 @@ const isLoading = createReducer(false, {
 });
 
 const itemsError = createReducer(null, {
-  [getContactsError]: (_, action) => action.payload,
+  [getContactsAsync.rejected]: (_, action) => action.payload,
   [deleteContactError]: (_, action) => action.payload,
 });
 
